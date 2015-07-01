@@ -1,10 +1,12 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var serveStatic = require('serve-static');
+var path = require('path');
 
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+app.use('/', serveStatic(path.join(__dirname, 'public'), {}));
+
+require('./routes.js')(app);
 
 io.on('connection', function(socket) {
     console.log('a user connected');
