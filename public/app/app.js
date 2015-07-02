@@ -9,15 +9,15 @@ var app = angular.module('app', [
         $routeProvider
             .when('/', {
                 templateUrl: '../views/chat.html',
-                controller: 'ChatController'
+                controller: 'AppController'
             })
             .when('/signin', {
                 templateUrl: '../views/login.html',
-                controller: 'ChatController'
+                controller: 'AppController'
             })
             .when('/signup', {
                 templateUrl: '../views/register.html',
-                controller: 'ChatController'
+                controller: 'AppController'
             })
             .otherwise({
                 redirectTo: '/'
@@ -33,11 +33,15 @@ var app = angular.module('app', [
                         config.headers.Authorization = 'Baerer ' + $localStorage.token;
                     }
 
+                    console.log(config.headers);
+
                     return config;
                 },
 
                 'responseError': function(responce) {
                     if (responce.status == 401 || responce.status == 403) {
+                        console.log('responceerror');
+
                         $location.path('/signin');
                     }
                     return $q.reject(responce);
@@ -45,13 +49,22 @@ var app = angular.module('app', [
             };
         }]);
     }])
-    .controller('AppController', function($scope) {
-        $scope.nahuy = 'zaebis';
-    });/*
     .run(function($rootScope, $location, $localStorage) {
+
         $rootScope.$on( "$routeChangeStart", function(event, next) {
+
+            console.log('token: ' + $localStorage.token);
+
             if ($localStorage.token == null) {
-                $location.path("/signin");
+
+                if ( next.templateUrl === "../views/chat.html") {
+
+                    $location.path("/signin");
+
+                }
+
             }
+
         });
-    });*/
+
+    });

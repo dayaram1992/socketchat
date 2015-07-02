@@ -1,13 +1,24 @@
 <div class="container">
     <div class="row">
-        <div class="col-sm-4 col-sm-offset-4">
+        <div class="col-sm-6 col-sm-offset-3">
             <div class="panel panel-success">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
-                    <form>
 
+                    <form ng-submit="signin()" role="form">
 
-                        <div type="submit" class="btn btn-success form-control"></div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="username" ng-model="username"/>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="password" ng-model="password"/>
+                        </div>
+
+                        <div type="submit" class="btn btn-success form-control">login</div>
+
+                        <p data-ng-show="error" class="error">{{ error }}</p>
+
                     </form>
                 </div>
             </div>

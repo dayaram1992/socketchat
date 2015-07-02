@@ -15,25 +15,24 @@
 </head>
 <body ng-controller="AppController">
 
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">JWT Angular example</a>
-    </div>
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-            <li ng-show="token"><a ng-href="#/restricted">Restricted area</a></li>
-            <li ng-hide="token"><a ng-href="#/signin">Sign in</a></li>
-            <li ng-hide="token"><a ng-href="#/signup">Sign up</a></li>
-            <li ng-show="token"><a ng-click="logout()">Logout</a></li>
-        </ul>
-    </div>
-
-    <p> {{ nahuy }} </p>
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/">_chat</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-hide="token"><a ng-href="#/signin">Sign in</a></li>
+                <li ng-hide="token"><a ng-href="#/signup">Sign up</a></li>
+                <li ng-show="token"><a ng-href="#/" ng-click="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <div ng-view></div>
 
@@ -42,31 +41,18 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular-loading-bar-master/build/loading-bar.min.js"></script>
 
-    <script src="bower_components/ngstorage/ngStorage.min.js"></script>
+    <script src="bower_components/ngStorage-fix/ngStorage.min.js"></script>
 
     <script src="app/app.js"></script>
     <script src="app/services.js"></script>
     <script src="app/controllers.js"></script>
+    <script src="app/directives.js"></script>
 
 
 
     <script>
-        var socket = io();
         (function() {
 
-            $(document).ready(function() {
-
-                $('form').submit(function() {
-                    socket.emit('chat message', $('#m').val());
-                    $('#m').val('');
-                    return false;
-                });
-
-                socket.on('chat message', function(msg) {
-                    $('#messages').append($('<li class="list-group-item">').text(msg));
-                });
-
-            });
 
         })();
     </script>

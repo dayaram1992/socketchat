@@ -1,43 +1,50 @@
-angular.module('app')
-    .controller('ChatController', [
-        '$rootScope', '$scope', '$location', '$localStorage', 'Auth',
-        function($rootScope, $scope, $location, $localStorage, Auth) {
+;(function() {
 
-            function successAuth(res) {
-                $localStorage.token = res.token;
-                window.location = '/';
-            }
+    angular.module('app')
 
-            $scope.signin = function() {
-                var formData = {
-                    username: $scope.username,
-                    password: $scope.password
-                };
+        .controller('AppController', [
+            '$rootScope', '$scope', '$location', '$localStorage', 'Auth',
+            function($rootScope, $scope, $location, $localStorage, Auth) {
 
-                Auth.signin(formData, successAuth, function() {
-                    $rootScope.error = 'Invatid credentials';
-                });
+                function successAuth(res) {
+                    $localStorage.token = res.token;
+                    $localStorage.$save();
 
-            };
-
-            $scope.signup = function() {
-                var formData = {
-                    username: $scope.username,
-                    password: $scope.password
-                };
-
-                Auth.signup(formData, successAuth, function() {
-                    $rootScope.error = 'Failed to signup';
-                });
-            };
-
-            $scope.logout = function() {
-                Auth.logout(function() {
                     window.location = '/';
-                });
-            };
+                }
 
-            $scope.token = $localStorage.token;
-            $scope.tokenClaims =  Auth.getTokenClaims();
+                $scope.signin = function() {
+                    var formData = {
+                        username: $scope.username,
+                        password: $scope.password
+                    };
 
-        }]);
+                    Auth.signin(formData, successAuth, function() {
+                        $rootScope.error = 'Invatid credentials';
+                    });
+
+                };
+
+                $scope.signup = function() {
+                    var formData = {
+                        username: $scope.username,
+                        password: $scope.password
+                    };
+
+                    Auth.signup(formData, successAuth, function() {
+                        $rootScope.error = 'Failed to signup';
+                    });
+                };
+
+                $scope.logout = function() {
+                    Auth.logout(function() {
+                        window.location = '/';
+                    });
+                };
+
+                $scope.token = $localStorage.token;
+                $scope.tokenClaims =  Auth.getTokenClaims();
+
+        }])
+
+})();
