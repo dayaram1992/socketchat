@@ -1,27 +1,42 @@
 <div class="container">
     <div class="row">
-        <div class="col-sm-6 col-sm-offset-3">
-            <div class="panel panel-success">
+        <div class="col-md-6 col-md-offset-3">
+            <!--<div class="panel panel-success">
                 <div class="panel-heading">Login</div>
-                <div class="panel-body">
+                <div class="panel-body">-->
+            <div class="well">
+                <h4>Login</h4>
 
-                    <form ng-submit="signin()" role="form">
+                <form ng-submit="signin()" name="signinForm">
 
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="username" ng-model="username"/>
-                        </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="username" ng-model="username" required/>
+                    </div>
 
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="password" ng-model="password"/>
-                        </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="password" ng-model="password" required/>
+                    </div>
 
-                        <div type="submit" class="btn btn-success form-control">login</div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success form-control">login</button>
+                    </div>
 
-                        <p data-ng-show="error" class="error">{{ error }}</p>
+                    <div data-ng-show="error" class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button"
+                                class="close"
+                                data-dismiss="alert"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>Error.</strong> {{ error }}
+                    </div>
 
-                    </form>
-                </div>
+                </form>
+
             </div>
+
+             <!--   </div>
+            </div>-->
         </div>
     </div>
 </div>

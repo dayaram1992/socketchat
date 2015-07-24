@@ -1,28 +1,191 @@
-<section class="container" chat>
+<section chat class="container" id="chatContainer">
+
     <div class="row">
-        <div class="col-sm-12">
+
+        <div class="col-md-4">
+
             <div class="panel panel-warning">
-                <div class="panel-heading">Chat</div>
-
-                <div class="list-group" id="messages"></div>
-
+                <div class="panel-heading">Rooms</div>
                 <div class="panel-body">
 
+                    <button type="button" class="btn btn-primary btn-block" ng-click="toggleRoomForm()">
+                        Create room
+                    </button>
 
-                    <form class="form-inline" id="chatForm">
+                    <form ng-submit="createRoomSubmit()" ng-show="showRoomForm">
+                        <br/>
+                        <div class="well">
 
-                        <input class="form-control"
-                               type="text" id="m" autocomplete="off"
-                               placeholder="Type message here" required/>
 
-                        <button class="btn btn-success" type="submit">Send</button>
+                            <div class="form-group">
+                                <label for="roomName">Room title</label>
+                                <input type="text" class="form-control" id="roomName"
+                                       placeholder="Title" required ng-model="newRoomTitle">
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="passDisabled"> Protect with password
+                                </label>
+                            </div>
+
+                            <div class="form-group" ng-show="passDisabled">
+                                <label for="roomPass">Password</label>
+                                <input type="password" class="form-control" id="roomPass" placeholder="Password"
+                                       ng-model="newRoomPass">
+                            </div>
+
+                            <div class="form-group" ng-show="passDisabled">
+                                <input type="password" class="form-control"
+                                       id="roomPassConfirm" placeholder="Confirm password"
+                                       ng-model="newRoomPassConfirm">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Access</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios"
+                                               id="publicRoomRadio" ng-model="roomIsPublic" ng-value="true">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                        Public
+                                    </label>
+                                </div>
+
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios"
+                                               id="privateRoomRadio" ng-value="false" ng-model="roomIsPublic">
+                                        <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                                        Private
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save</button>
+
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="list-group" ng-repeat="room in rooms">
+                    <a href="" class="list-group-item" ng-click="roomSelected(room._id)">{{ room.title }}</a>
+                </div>
+
+            </div>
+
+            <div class="panel panel-warning">
+                <div class="panel-heading">People</div>
+                <div class="panel-body">people list</div>
+            </div>
+
+        </div>
+
+        <div class="col-md-8">
+            <div class="panel panel-warning" id="chatPanel">
+                <div class="panel-heading">
+                    Chat [ <span id="room-title">{{selectedRoom.title}}</span> ]
+                    <span class="pull-right" ng-show="chatSelected">
+                        <span class="btn btn-danger btn-xs" ng-click="closeRoom()">close room</span>
+                    </span>
+                </div>
+
+                <div class="panel-body" ng-show="chatSelected">
+
+                    <form id="chatForm" ng-submit="sendMessageSubmit()">
+
+                        <div class="input-group">
+                            <input type="text" class="form-control"
+                                   id="m" autocomplete="off" ng-model="msgToSend"
+                                   placeholder="Type message here" required />
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" type="submit">Send</button>
+                            </span>
+                        </div>
 
                     </form>
 
                 </div>
 
+                <div class="panel-body" ng-hide="chatSelected">
+                    <p>Select the chat room</p>
+                </div>
+
+                <div class="list-group" id="messages" ng-show="chatSelected"></div>
 
             </div>
         </div>
+
     </div>
+
+    <!-- Modal
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Create room</h4>
+                </div>
+
+                <form ng-submit="createRoomSubmit()" name="createRoomForm">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="roomName">Room title</label>
+                            <input type="text" class="form-control" id="roomName"
+                                   placeholder="Title" required ng-model="newRoomTitle">
+                        </div>
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="passDisabled"> Protect with password
+                            </label>
+                        </div>
+
+                        <div class="form-group" ng-show="passDisabled">
+                            <label for="roomPass">Password</label>
+                            <input type="password" class="form-control" id="roomPass" placeholder="Password"
+                                   ng-model="newRoomPass">
+                        </div>
+
+                        <div class="form-group" ng-show="passDisabled">
+                            <input type="password" class="form-control"
+                                   id="roomPassConfirm" placeholder="Confirm password"
+                                   ng-model="newRoomPassConfirm">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Access</label>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios"
+                                           id="publicRoomRadio" ng-model="roomIsPublic" ng-value="true">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    Public
+                                </label>
+                            </div>
+
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios"
+                                           id="privateRoomRadio" ng-value="false" ng-model="roomIsPublic">
+                                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                                    Private
+                                </label>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>-->
+
 </section>

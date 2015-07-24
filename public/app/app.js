@@ -1,7 +1,8 @@
 var app = angular.module('app', [
     'ngStorage',
     'ngRoute',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'btford.socket-io'
 ])
 
     .config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
@@ -52,6 +53,8 @@ var app = angular.module('app', [
     .run(function($rootScope, $location, $localStorage) {
 
         $rootScope.$on( "$routeChangeStart", function(event, next) {
+
+            $rootScope.error = '';
 
             console.log('token: ' + $localStorage.token);
 

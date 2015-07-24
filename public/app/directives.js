@@ -10,49 +10,51 @@
 
         var user = Auth.getTokenClaims();
 
-        return {
-            restrict: 'EA',
-            scope: {},
-            link: function(scope, el, attrs) {
+        function onChatMsg(msg) {
 
-                $(function() {
-                    var socket = io();
+            var message = ''
+                + '<div class="list-group-item">'
+                    + ' <p>'
+                        + '<span class="label label-primary">' + msg.msgUser + '</span> '
+                        + '<span class="label label-warning">' + (moment(msg.msgCreated).format('MMM Do, hh:mm:ss')) + '</span> '
+                        + '<a>[remove]</a>'
+                    + '</p>'
+                    + '<p>' + msg.msgBody + '</p>'
+                + '</div>';
 
-                    $(document).ready(function() {
+            $('#messages').prepend($(message));
 
-                        $('#chatForm').submit(function() {
+        }
 
-                            socket.emit('chat message', {
-                                user: user.username,
-                                msg: $('#m').val()
-                            });
+        function link(scope, el, attrs) {
 
-                            $('#m').val('');
+            $(function() {
 
-                            return false;
+                /*var socket = io();
 
-                        });
+                $('#chatForm').on('submit', function() {
 
-                        socket.on('chat message', function(msg) {
-                            console.log(msg);
-                            var message = ''
-                                + '<div class="list-group-item">'
-                                + '<span class="label label-primary">' + msg.user + '</span> '
-                                + msg.msg
-                                + '</div>';
-                            $('#messages').append($(message));
-
-                        });
-
+                    socket.emit('chat message', {
+                        msgUser: user.username,
+                        msgBody: $('#m').val()
                     });
+
+                    $('#m').val('');
 
                 });
 
-                console.log('chat directive');
+                socket.on('chat message', onChatMsg);*/
 
-            }
+            });
+
+        }
+
+        return {
+            restrict: 'EA',
+            scope: {},
+            link: link
         };
 
-    };
+    }
 
 })();

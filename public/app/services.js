@@ -23,12 +23,12 @@
 
             function getClaimsFromToken() {
                 var token = $localStorage.token;
-                var user = {};
+                var data = {};
                 if (typeof token !== 'undefined') {
                     var encoded = token.split('.')[1];
-                    user = JSON.parse(urlBase64Decode(encoded));
+                    data = JSON.parse(urlBase64Decode(encoded));
                 }
-                return user;
+                return data;
             }
 
             var tokenClaims = getClaimsFromToken();
@@ -59,12 +59,27 @@
 
             return {
 
-                getMessages: function() {
-
+                getRooms: function(success, error) {
+                    $http.get('/user/rooms').success(success).error(error);
+                },
+                getFriends: function(success, error) {
+                    $http.get('/user/friends').success(success).error(error);
+                },
+                addRoom : function (room, success, error) {
+                    $http.post('/rooms', {room: room}).success(success).error(error);
+                },
+                getRoomMessages: function(roomId, success, error) {
+                    $http.get('/rooms/:roomId/messages').success(success).error(error);
                 }
 
             };
 
+        }])
+
+        .factory('MySocket', ['socketFactory', function(socketFactory) {
+            var mySocket = socketFactory();
+            mySocket.forward('error');
+            return mySocket;
         }]);
 
 })();
